@@ -1,5 +1,7 @@
+#!/usr/bin/env python
 
-## this setup.py inspired by setup.py`s from https://github.com/meejah/txtorcon and https://github.com/habnabit/txsocksx
+## this setup.py inspired by setup.py`s from
+## https://github.com/meejah/txtorcon and https://github.com/habnabit/txsocksx
 
 from setuptools import setup
 
@@ -15,7 +17,8 @@ setup(
     description='Twisted client endpoint and parser for Tor SOCKS client',
     version = __version__,
     long_description = open('README.rst', 'r').read(),
-    keywords = ['python', 'twisted', 'tor', 'twisted endpoint', 'twisted endpoint parser', 'tor socks client'],
+    keywords = ['python', 'twisted', 'tor', 'twisted endpoint',
+                'twisted endpoint parser', 'tor socks client'],
 
     classifiers=['Framework :: Twisted',
                  'Development Status :: 3 - Alpha',
