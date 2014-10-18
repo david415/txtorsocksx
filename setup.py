@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 
 ## this setup.py inspired by setup.py`s from https://github.com/meejah/txtorcon and https://github.com/habnabit/txsocksx
 
