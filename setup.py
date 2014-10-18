@@ -37,14 +37,6 @@ setup(
     author_email = __contact__,
     url = __url__,
     license = __license__,
-
-#    setup_requires=['vcversioner>=1'],
-#    vcversioner={
-#        'version_module_paths': ['txtorsocksx/_version.py'],
-#    },
-
     install_requires=open('requirements.txt', 'rb').read().split(),
-
     packages=['txtorsocksx', 'twisted.plugins'],
-
 )
