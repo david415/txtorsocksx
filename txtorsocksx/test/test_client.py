@@ -52,7 +52,7 @@ class TestTorClientEndpoint(unittest.TestCase):
         def FailTorSocksEndpointGenerator(*args, **kw):
             kw['failure'] = connectionRefusedFailure
             return FakeTorSocksEndpoint(*args, **kw)
-        endpoint = TorClientEndpoint('', 0, FailTorSocksEndpointGenerator)
+        endpoint = TorClientEndpoint('', 0, proxyEndpointGenerator=FailTorSocksEndpointGenerator)
         d = endpoint.connect(None)
         return self.assertFailure(d, ConnectionRefusedError)
 
@@ -62,7 +62,7 @@ class TestTorClientEndpoint(unittest.TestCase):
         """
         def TorSocksEndpointGenerator(*args, **kw):
             return FakeTorSocksEndpoint(*args, **kw)
-        endpoint = TorClientEndpoint('', 0, TorSocksEndpointGenerator)
+        endpoint = TorClientEndpoint('', 0, proxyEndpointGenerator=TorSocksEndpointGenerator)
         endpoint.connect(None)
         self.assertEqual(endpoint.torSocksEndpoint.transport.value(), '\x05\x01\x00')
 
@@ -79,7 +79,7 @@ class TestTorClientEndpoint(unittest.TestCase):
                 kw['acceptPort'] = port
                 kw['failure']    = connectionRefusedFailure
                 return FakeTorSocksEndpoint(*args, **kw)
-            endpoint = TorClientEndpoint('', 0, TorSocksEndpointGenerator)
+            endpoint = TorClientEndpoint('', 0, proxyEndpointGenerator=TorSocksEndpointGenerator)
             endpoint.connect(None)
             self.assertEqual(endpoint.torSocksEndpoint.transport.value(), '\x05\x01\x00')
 
@@ -93,6 +93,6 @@ class TestTorClientEndpoint(unittest.TestCase):
                 kw['acceptPort'] = port
                 kw['failure']    = connectionRefusedFailure
                 return FakeTorSocksEndpoint(*args, **kw)
-            endpoint = TorClientEndpoint('', 0, TorSocksEndpointGenerator)
+            endpoint = TorClientEndpoint('', 0, proxyEndpointGenerator=TorSocksEndpointGenerator)
             d = endpoint.connect(None)
             return self.assertFailure(d, ConnectionRefusedError)
