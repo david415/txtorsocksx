@@ -15,6 +15,22 @@ __module__ = 'txtorsocksx.endpoints'
 
 @implementer(IPlugin, IStreamClientEndpointStringParser)
 class TorClientEndpointStringParser(object):
+    """
+    This provides a twisted IPlugin and
+    IStreamClientEndpointsStringParser so you can call
+    :api:`twisted.internet.endpoints.clientFromString
+    <clientFromString>` with a string argument like:
+
+    ``tor:host=timaq4ygg2iegci7.onion:port=80:socksPort=9050``
+
+    ...or simply:
+
+    ``tor:host=timaq4ygg2iegci7.onion:port=80``
+
+    If ``socksPort`` is specified, it means only use that port to attempt to 
+    proxy through Tor. If unspecified then try some likely socksPorts
+    such as [9050, 9150].
+    """
     prefix = "tor"
 
     def _parseClient(self, host=None, port=None, socksPort=None):
@@ -37,15 +53,19 @@ def DefaultTCP4EndpointGenerator(*args, **kw):
 
 @implementer(interfaces.IStreamClientEndpoint)
 class TorClientEndpoint(object):
-    """An endpoint which attempts to establish a SOCKS5 connection
-    with the system tor process by iterating over a list of ports
-    that tor might be listening to.
+    """Hello. I am an endpoint class who attempts to establish a SOCKS5 connection
+    with the system tor process. Either the user must pass a SOCKS port into my
+    constructor OR I will attempt to guess the Tor SOCKS port by iterating over a list of ports
+    that tor is likely to be listening on.
 
     :param host: The hostname to connect to.
     This of course can be a Tor Hidden Service onion address.
 
     :param port: The tcp port or Tor Hidden Service port.
 
+    :param proxyEndpointGenerator: This is used for unit tests.
+
+    :param socksPort: This optional argument lets the user specify which Tor SOCKS port should be used.
     """
 
     socks_ports_to_try = [9050, 9150]
