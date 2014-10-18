@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from twisted.internet import reactor
 from twisted.internet.protocol import Protocol, Factory
 from twisted.internet.endpoints import clientFromString
