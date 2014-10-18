@@ -22,12 +22,14 @@ class GETSlashFactory(Factory):
         return GETSlash()
 
 
-torEndpoint = clientFromString(reactor, "tor:host=timaq4ygg2iegci7.onion:port=80")
-d = torEndpoint.connect(GETSlashFactory())
-@d.addErrback
-def _gotError(error):
-    print error
-    print "Error in connection"
-    reactor.stop()
+if __name__ == "__main__":
+    torEndpoint = clientFromString(reactor, "tor:host=timaq4ygg2iegci7.onion:port=80")
+    d = torEndpoint.connect(GETSlashFactory())
 
-reactor.run()
+    @d.addErrback
+    def _gotError(error):
+        print error
+        print "Error in connection"
+        reactor.stop()
+
+    reactor.run()
