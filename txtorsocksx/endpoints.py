@@ -9,6 +9,8 @@ from twisted.internet.interfaces import IStreamClientEndpointStringParser
 
 from txsocksx.client import SOCKS5ClientEndpoint
 
+__module__ = 'txtorsocksx.endpoints'
+
 
 @implementer(IPlugin, IStreamClientEndpointStringParser)
 class TorClientEndpointStringParser(object):
