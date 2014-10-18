@@ -53,7 +53,7 @@ def DefaultTCP4EndpointGenerator(*args, **kw):
 
 @implementer(interfaces.IStreamClientEndpoint)
 class TorClientEndpoint(object):
-    """Hello. I am an endpoint class who attempts to establish a SOCKS5 connection
+    """I am an endpoint class who attempts to establish a SOCKS5 connection
     with the system tor process. Either the user must pass a SOCKS port into my
     constructor OR I will attempt to guess the Tor SOCKS port by iterating over a list of ports
     that tor is likely to be listening on.
@@ -67,7 +67,6 @@ class TorClientEndpoint(object):
 
     :param socksPort: This optional argument lets the user specify which Tor SOCKS port should be used.
     """
-
     socks_ports_to_try = [9050, 9150]
 
     def __init__(self, host, port, proxyEndpointGenerator=DefaultTCP4EndpointGenerator, socksPort=None):
