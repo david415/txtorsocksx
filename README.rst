@@ -15,10 +15,23 @@ you can install txtorsocksx in your python virtual environment like this:
 overview
 --------
 
-txtorsocksx is a Tor client endpoint and parser for the python Twisted asynchronous
-networking framework. To learn more about Twisted endpoints and parsers see here:
+txtorsocksx is a Tor client endpoint and parser for the python Twisted
+asynchronous networking framework. To learn more about Twisted endpoints
+and parsers see here:
 
 https://twistedmatrix.com/documents/14.0.0/core/howto/endpoints.html
+
+You can write Twisted program in an endpoint agnostic manner... for example
+on the client side you can pass Twisted's `clientFromString` a client endpoint
+descriptor string and receive from it an endpoint object. A txtorsocksx endpoint
+descriptor string looks like this::
+
+    tor:host=timaq4ygg2iegci7.onion:port=80
+
+`clientFromString` uses a Twisted plugin system to load the correct parser
+for each endpoint type. The above client endpoint descriptor string has a type
+of "tor" and therefore loads the  `txtorsocksx` endpoint parser plugin which is
+registered with Twisted's plugin system.
 
 
 contact
@@ -26,9 +39,9 @@ contact
 
 Bugfixes, suggestions and feature requests welcome!
 
-email: dstainton415@gmail.com
-gpg key ID: 0x836501BE9F27A723
-gpg fingerprint: F473 51BD 87AB 7FCF 6F88  80C9 8365 01BE 9F27 A723
+email dstainton415@gmail.com
+gpg key ID 0x836501BE9F27A723
+gpg fingerprint F473 51BD 87AB 7FCF 6F88  80C9 8365 01BE 9F27 A723
 
 irc - I'm dawuud on irc and I am usually lurking in:
 #tor on oftc
