@@ -8,6 +8,9 @@ from twisted.plugin import IPlugin
 from twisted.internet.interfaces import IStreamClientEndpointStringParser
 from twisted.internet import error
 
+import random
+import string
+
 from txsocksx.client import SOCKS5ClientEndpoint
 
 __module__ = 'txtorsocksx.endpoints'
@@ -33,13 +36,16 @@ class TorClientEndpointStringParser(object):
     """
     prefix = "tor"
 
-    def _parseClient(self, host=None, port=None, socksPort=None):
+    def _parseClient(self, host=None, port=None, socksPort=None, newCircuit=None):
         if port is not None:
             port = int(port)
         if socksPort is not None:
             socksPort = int(socksPort)
-
-        return TorClientEndpoint(host, port, socksPort=socksPort)
+        if newCircuit is not None:
+            newCircuit = True
+        else:
+            newCircuit = False
+        return TorClientEndpoint(host, port, socksPort=socksPort, newCircuit=newCircuit)
 
     def parseStreamClient(self, *args, **kwargs):
         return self._parseClient(*args, **kwargs)
@@ -69,7 +75,7 @@ class TorClientEndpoint(object):
     """
     socks_ports_to_try = [9050, 9150]
 
-    def __init__(self, host, port, proxyEndpointGenerator=DefaultTCP4EndpointGenerator, socksPort=None):
+    def __init__(self, host, port, proxyEndpointGenerator=DefaultTCP4EndpointGenerator, socksPort=None, newCircuit=None):
         if host is None or port is None:
             raise ValueError('host and port must be specified')
 
@@ -77,6 +83,7 @@ class TorClientEndpoint(object):
         self.port = port
         self.proxyEndpointGenerator = proxyEndpointGenerator
         self.socksPort = socksPort
+        self.newCircuit = newCircuit
 
         if self.socksPort is None:
             self.socksPortIter = iter(self.socks_ports_to_try)
@@ -93,9 +100,18 @@ class TorClientEndpoint(object):
         d = self._try_connect()
         return d
 
+    def _randomWord(self):
+        return ''.join(random.choice(string.ascii_lowercase) for _ in range(8))
+
+    def _randomAuth(self):
+        return self._randomWord(), self._randomWord()
+
     def _try_connect(self):
         self.torSocksEndpoint = self.proxyEndpointGenerator(reactor, '127.0.0.1', self.socksPort)
-        socks5ClientEndpoint = SOCKS5ClientEndpoint(self.host, self.port, self.torSocksEndpoint)
+        if self.newCircuit:
+            socks5ClientEndpoint = SOCKS5ClientEndpoint(self.host, self.port, self.torSocksEndpoint, methods={'login': self._randomAuth()})
+        else:
+            socks5ClientEndpoint = SOCKS5ClientEndpoint(self.host, self.port, self.torSocksEndpoint)
         d = socks5ClientEndpoint.connect(self.protocolfactory)
         if self.socksGuessingEnabled:
             d.addErrback(self._retry_socks_port)
