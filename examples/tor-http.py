@@ -23,6 +23,10 @@ class GETSlashFactory(Factory):
 
 
 if __name__ == "__main__":
+    #torEndpoint = clientFromString(reactor, "tor:host=icanhazip.com:port=80:socksPassword=6:socksUsername=")
+    #torEndpoint = clientFromString(reactor, "tor:host=icanhazip.com:port=80:socksUsername=yoyo:socksPassword=you")
+    #torEndpoint = clientFromString(reactor, "tor:host=timaq4ygg2iegci7.onion:port=80:socksUsername=fofo:socksPassword=you")
+    #torEndpoint = clientFromString(reactor, "tor:host=timaq4ygg2iegci7.onion:port=80:socksUsername=hoho")
     torEndpoint = clientFromString(reactor, "tor:host=timaq4ygg2iegci7.onion:port=80")
     d = torEndpoint.connect(GETSlashFactory())
 
