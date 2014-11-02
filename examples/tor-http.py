@@ -27,6 +27,7 @@ if __name__ == "__main__":
     #torEndpoint = clientFromString(reactor, "tor:host=icanhazip.com:port=80:socksUsername=yoyo:socksPassword=you")
     #torEndpoint = clientFromString(reactor, "tor:host=timaq4ygg2iegci7.onion:port=80:socksUsername=fofo:socksPassword=you")
     #torEndpoint = clientFromString(reactor, "tor:host=timaq4ygg2iegci7.onion:port=80:socksUsername=hoho")
+    #torEndpoint = clientFromString(reactor, "tor:host=timaq4ygg2iegci7.onion:port=80:socksHostname=127.0.0.1")
     torEndpoint = clientFromString(reactor, "tor:host=timaq4ygg2iegci7.onion:port=80")
     d = torEndpoint.connect(GETSlashFactory())
 

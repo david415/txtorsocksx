@@ -33,13 +33,15 @@ class TorClientEndpointStringParser(object):
     """
     prefix = "tor"
 
-    def _parseClient(self, host=None, port=None, socksPort=None, socksUsername=None, socksPassword=None):
+    def _parseClient(self, host=None, port=None, socksHostname=None, socksPort=None, socksUsername=None, socksPassword=None):
         if port is not None:
             port = int(port)
+        if socksHostname is None:
+            socksHostname = '127.0.0.1'
         if socksPort is not None:
             socksPort = int(socksPort)
 
-        return TorClientEndpoint(host, port, socksPort=socksPort, socksUsername=socksUsername, socksPassword=socksPassword)
+        return TorClientEndpoint(host, port, socksHostname=socksHostname, socksPort=socksPort, socksUsername=socksUsername, socksPassword=socksPassword)
 
     def parseStreamClient(self, *args, **kwargs):
         return self._parseClient(*args, **kwargs)
@@ -69,13 +71,14 @@ class TorClientEndpoint(object):
     """
     socks_ports_to_try = [9050, 9150]
 
-    def __init__(self, host, port, proxyEndpointGenerator=DefaultTCP4EndpointGenerator, socksPort=None, socksUsername=None, socksPassword=None):
+    def __init__(self, host, port, proxyEndpointGenerator=DefaultTCP4EndpointGenerator, socksHostname=None, socksPort=None, socksUsername=None, socksPassword=None):
         if host is None or port is None:
             raise ValueError('host and port must be specified')
 
         self.host = host
         self.port = port
         self.proxyEndpointGenerator = proxyEndpointGenerator
+        self.socksHostname = socksHostname
         self.socksPort = socksPort
         self.socksUsername = socksUsername
         self.socksPassword = socksPassword
@@ -96,7 +99,7 @@ class TorClientEndpoint(object):
         return d
 
     def _try_connect(self):
-        self.torSocksEndpoint = self.proxyEndpointGenerator(reactor, '127.0.0.1', self.socksPort)
+        self.torSocksEndpoint = self.proxyEndpointGenerator(reactor, self.socksHostname, self.socksPort)
 
         if self.socksUsername is None or self.socksPassword is None:
             socks5ClientEndpoint = SOCKS5ClientEndpoint(self.host, self.port, self.torSocksEndpoint)
