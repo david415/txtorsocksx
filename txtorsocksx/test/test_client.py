@@ -6,7 +6,6 @@ from twisted.test import proto_helpers
 from twisted.python import failure
 from twisted.internet.error import ConnectionRefusedError
 
-from txsocksx import client
 from txtorsocksx.endpoints import TorClientEndpoint
 
 
