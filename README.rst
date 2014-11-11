@@ -33,11 +33,37 @@ for each endpoint type. The above client endpoint descriptor string has a type
 of "tor" and therefore loads the  `txtorsocksx` endpoint parser plugin which is
 registered with Twisted's plugin system.
 
+The `txtorsocksx` endpoint wraps the SOCKS 5 endpoint from `txsocksx`... and
+unless further endpoint descriptor arguments are specified, will by default
+attempt to connect to the local tor process at SOCKS host 127.0.0.1, ports
+9050 and then 9150.
+
+Here are two valid example endpoint descriptor strings::
+
+    tor:host=timaq4ygg2iegci7.onion:port=80:socksPort=9050
+
+and ::
+
+    tor:host=timaq4ygg2iegci7.onion:port=80:socksHostname=127.0.0.1:socksPort=9050
+
+``socksUsername`` and ``socksPassword`` arguments can be specified to effectively
+tell the Tor process to create a new Tor circuit or to reuse an existing circuit.
+Please do not abuse the Tor network and create large numbers of circuits.
+
+::
+
+    tor:host=timaq4ygg2iegci7.onion:port=80:socksUsername=hail:socksPassword=eris
+
+
 
 contact
 -------
 
 Bugfixes, suggestions and feature requests welcome!
+
+I'd also be interested to hear from developers using this Tor client endpoint
+in their software.
+
 
   - email dstainton415@gmail.com
   - gpg key ID 0x836501BE9F27A723
